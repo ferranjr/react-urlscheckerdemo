@@ -13,8 +13,8 @@ var UrlChecker = React.createClass({
         }
     },
 
-    componentDidMount: function () {
-        // Check the url is available
+    checkUrl: function() {
+          // Check the url is available
         var that = this;
 
         $.get(this.props.urlToCheck)
@@ -26,7 +26,15 @@ var UrlChecker = React.createClass({
                 console.log(data);
                 that.setState({statusColor: 'danger', statusText: 'failed'});
             });
+    },
 
+
+    componentDidMount: function () {
+        var that = this;
+
+        this.timer = setInterval(function() {
+            that.checkUrl();
+        }, 5000);
     },
 
     render: function () {
@@ -36,6 +44,7 @@ var UrlChecker = React.createClass({
                     { this.state.statusText }
                 </span>&nbsp;
                 { this.props.urlToCheck }
+                <button onClick={this.checkUrl} >check</button>
             </p>
         );
     }
